@@ -11,6 +11,7 @@ public class Manipulator : MonoBehaviour
     public int grabbingCapacity;
     public float grabbingRadius;
     public Collider[] grabbedColliders;
+    private int _grabbedNum;
 
     public bool IsReady()
     {
@@ -19,10 +20,11 @@ public class Manipulator : MonoBehaviour
     
     public void Grab()
     {
-        Physics.OverlapSphereNonAlloc(transform.position, grabbingRadius, grabbedColliders);
-        foreach (var grabbedCollider in grabbedColliders)
+        
+        _grabbedNum = Physics.OverlapSphereNonAlloc(transform.position, grabbingRadius, grabbedColliders);
+        for (var i = 0; i < _grabbedNum; i++)
         {
-            grabbedCollider.transform.SetParent(this.transform);
+            grabbedColliders[i].transform.SetParent(this.transform);
         }
     }
 
@@ -30,6 +32,10 @@ public class Manipulator : MonoBehaviour
     {
         Debug.Log("Releasing!");
         transform.DetachChildren();
+        for (var i = 0; i < _grabbedNum; i++)
+        {
+            grabbedColliders[i] = null;
+        }
     }
 
     public void Move(float distance)

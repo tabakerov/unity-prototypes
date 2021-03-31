@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Excecutor : MonoBehaviour
 {
+    public bool paused = true;
     public InstructionQueue instructionQueue;
 
     public Manipulator manipulator;
@@ -22,6 +23,7 @@ public class Excecutor : MonoBehaviour
     
     private void Update()
     {
+        if (paused) return;
         if (_executing) return;
         if (instructionQueue.instructions.Count == 0) return;
 
